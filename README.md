@@ -1,8 +1,7 @@
 -- ============================================
--- ANTI-KICK v5.1 - DELTA EDITION (SIN PRUEBA)
+-- ANTI-KICK v5.2 - DELTA EDITION (SILENCIO TOTAL)
 -- ============================================
--- Eliminada la línea que ejecuta player:Kick()
--- ¡NO ejecutes pruebas de kick tú mismo!
+-- Sin pruebas, sin mensajes sospechosos, solo protección pasiva
 
 local player = game:GetService("Players").LocalPlayer
 local runService = game:GetService("RunService")
@@ -35,7 +34,7 @@ topBar.BorderSizePixel = 0
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, -40, 1, 0)
 title.Position = UDim2.new(0, 10, 0, 0)
-title.Text = "🛡️ ANTI-KICK v5.1 | MODO SILENCIOSO"
+title.Text = "🛡️ ANTI-KICK v5.2 | SILENCIO TOTAL"
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.TextSize = 13
 title.TextXAlignment = Enum.TextXAlignment.Left
@@ -81,7 +80,7 @@ bottomBar.BorderSizePixel = 0
 local statusText = Instance.new("TextLabel")
 statusText.Size = UDim2.new(1, -10, 1, 0)
 statusText.Position = UDim2.new(0, 5, 0, 0)
-statusText.Text = "🟢 ACTIVO | Modo silencioso"
+statusText.Text = "🟢 ACTIVO | Modo silencio total"
 statusText.TextColor3 = Color3.fromRGB(150, 255, 150)
 statusText.TextSize = 11
 statusText.TextXAlignment = Enum.TextXAlignment.Left
@@ -97,7 +96,7 @@ local uiCornerBottom = Instance.new("UICorner")
 uiCornerBottom.CornerRadius = UDim.new(0, 8)
 
 -- ============================================
--- FUNCIONES DE LOG
+-- FUNCIONES DE LOG (SILENCIOSAS)
 -- ============================================
 local function addLog(message, logType)
     local logFrame = Instance.new("Frame")
@@ -140,37 +139,38 @@ local function addLog(message, logType)
 end
 
 -- ============================================
--- PROTECCIÓN (SIN PRUEBA AUTOMÁTICA)
+-- PROTECCIÓN (COMPLETAMENTE PASIVA)
 -- ============================================
 local originalKick = nil
 local heartbeatConnection = nil
 local hookActive = true
 
--- Capturar método original
+-- Capturar método original (sin mostrar errores)
 local success, capturedKick = pcall(function()
     return player.Kick
 end)
 
 if success and capturedKick then
     originalKick = capturedKick
-    addLog("📦 Método Kick original capturado", "success")
+    addLog("📦 Sistema listo", "success")
 end
 
--- Hook de protección
+-- Hook de protección (sin mensajes llamativos)
 local ourKick = function(self, message)
-    addLog("🛡️ KICK CLIENTE BLOQUEADO | " .. tostring(message or "intento de kick"), "warning")
-    statusText.Text = "⚠️ Kick bloqueado: " .. tostring(message or "desconocido")
+    -- Solo log interno, nada que enviar al servidor
+    addLog("🛡️ Intento bloqueado", "warning")
+    statusText.Text = "⚠️ Intento bloqueado"
     statusDot.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
-    task.wait(0.5)
+    task.wait(0.3)
     statusDot.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-    statusText.Text = "🟢 ACTIVO | Modo silencioso"
+    statusText.Text = "🟢 ACTIVO | Modo silencio total"
     return nil
 end
 
--- Aplicar hook
+-- Aplicar hook silenciosamente
 pcall(function()
     rawset(player, "Kick", ourKick)
-    addLog("🔗 Hook aplicado correctamente", "success")
+    addLog("🔗 Protección activa", "success")
 end)
 
 -- Heartbeat para mantener hook
@@ -182,9 +182,9 @@ heartbeatConnection = runService.Heartbeat:Connect(function()
     end
 end)
 
-addLog("💓 Heartbeat conectado - protección activa", "success")
+addLog("💓 Corazón latiendo", "success")
 
--- Interceptar RemoteEvents de kick
+-- Interceptar RemoteEvents (silenciosamente)
 pcall(function()
     local rs = game:GetService("ReplicatedStorage")
     local kickRemotes = {}
@@ -204,11 +204,11 @@ pcall(function()
     end
     
     if #kickRemotes > 0 then
-        addLog("📡 " .. #kickRemotes .. " RemoteEvents interceptados", "success")
+        addLog("📡 " .. #kickRemotes .. " remotes monitoreados", "success")
     end
 end)
 
--- Autodestrucción silenciosa
+-- Autodestrucción silenciosa (sin dejar rastro)
 spawn(function()
     task.wait(8)
     if hookActive then
@@ -216,8 +216,8 @@ spawn(function()
         if heartbeatConnection then
             heartbeatConnection:Disconnect()
         end
-        addLog("💀 Autodestrucción completada - sin huellas", "success")
-        statusText.Text = "✅ Protección activa (modo ghost)"
+        addLog("💀 Modo fantasma activado", "success")
+        statusText.Text = "👻 Modo fantasma"
     end
 end)
 
@@ -241,12 +241,13 @@ pcall(function()
     screenGui.Parent = coreGui
 end)
 
--- Mensaje final
+-- ============================================
+-- MENSAJE FINAL (SOLO EN GUI, NO EN EJECUCIÓN)
+-- ============================================
 addLog("━━━━━━━━━━━━━━━━━━━━━━━━━━", "info")
-addLog("✨ ANTI-KICK v5.1 ACTIVO", "success")
+addLog("✨ ANTI-KICK v5.2 ACTIVO", "success")
 addLog("━━━━━━━━━━━━━━━━━━━━━━━━━━", "info")
-addLog("⚠️ Este script SOLO bloquea kicks del CLIENTE", "warning")
-addLog("⚠️ Kicks del SERVIDOR son IMPOSIBLES de bloquear", "error")
-addLog("ℹ️ Modo silencioso - sin pruebas automáticas", "info")
+addLog("ℹ️ Sin pruebas automáticas", "info")
+addLog("⚠️ Solo bloquea kicks del cliente", "warning")
 
-print("✅ Anti-Kick v5.1 cargado - Modo silencioso activado")
+print("✅ Anti-Kick v5.2 cargado - Sin pruebas, solo protección")
